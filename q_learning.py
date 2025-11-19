@@ -19,7 +19,7 @@ gui_flag = 'gui' in sys.argv
 env = MazeEscapeEnv()
 
 
-def q_learning(num_episodes=10000, gamma=0.9, epsilon=1.0, decay_rate=0.999):
+def q_learning(num_episodes=1000000, gamma=0.9, epsilon=1.0, decay_rate=0.9999995):
     """
     Run Q-learning algorithm for a specified number of episodes.
 
@@ -147,8 +147,8 @@ Configuration: Set training hyperparameters
 '''
 
 # Experiment hyperparameters
-num_episodes = 1000
-decay_rate = 0.99
+num_episodes = 1000000
+decay_rate = 0.9999995
 
 '''
 Training Mode: Train agent and save Q-table
