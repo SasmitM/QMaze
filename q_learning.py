@@ -7,6 +7,14 @@ from tqdm import tqdm
 from maze_env import MazeEscapeEnv
 from state_hash import hash_observation
 
+try:
+    from state_hash_rust import hash_observation_rust as hash_observation
+    print("✅ Using Rust hash function!")
+except ImportError:
+    from state_hash import hash_observation
+    print("⚠️ Using Python hash function")
+
+
 # ANSI escape sequences for formatting
 BOLD = '\033[1m'
 RESET = '\033[0m'
@@ -19,7 +27,7 @@ gui_flag = 'gui' in sys.argv
 env = MazeEscapeEnv()
 
 
-def q_learning(num_episodes=1000000, gamma=0.9, epsilon=1.0, decay_rate=0.9999995):
+def q_learning(num_episodes=10000, gamma=0.9, epsilon=1.0, decay_rate=0.9999):
     """
     Run Q-learning algorithm for a specified number of episodes.
 
@@ -147,8 +155,8 @@ Configuration: Set training hyperparameters
 '''
 
 # Experiment hyperparameters
-num_episodes = 1000000
-decay_rate = 0.9999995
+num_episodes = 100000
+decay_rate = 0.99999
 
 '''
 Training Mode: Train agent and save Q-table

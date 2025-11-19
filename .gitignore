@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Operating System
+.DS_Store
+Thumbs.db
+
+# Project specific - Large training files
+*.pickle
+*.pkl
+
+# Project specific - Generated plots
+*.png
+*.jpg
+*.jpeg
+
+# Project specific - Profiling
+*.prof
+profile_stats.prof
+
+# Rust
+target/
+Cargo.lock
+**/*.rs.bk
+
+# Data files
+*.csv
+*.json
+*.txt
