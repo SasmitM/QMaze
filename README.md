@@ -160,6 +160,34 @@ Q_new(s,a) = (1-η)Q_old(s,a) + η[R(s,a,s') + γ max Q_old(s',a')]
 epsilon = epsilon * decay_rate  # After each episode
 ```
 
+
+## Challenges & Solutions
+
+### Environment Setup
+**Problem**: Gym library deprecated and incompatible with NumPy 2.0  
+**Solution**: Migrated to Gymnasium, the maintained successor. Updated all environment method signatures (`reset()` now returns `(observation, info)`, `step()` returns 5 values including separate `terminated` and `truncated` flags).
+
+**Problem**: Conda and venv environments active simultaneously  
+**Solution**: Maturin build failed with "Both VIRTUAL_ENV and CONDA_PREFIX are set" error. Resolved by unsetting `CONDA_PREFIX` environment variable before building Rust module.
+
+### Performance Optimization
+**Problem**: Python hash function performance bottleneck  
+**Solution**: Profiling revealed state hashing consumed 17% of training time. Reimplemented the critical hash function in Rust using PyO3, achieving 27% overall training speedup (512s → 404s for 100K episodes). Hash function is called millions of times during training, making compiled execution particularly beneficial.
+
+**Problem**: Minimal speedup on small episode counts  
+**Solution**: 10K episodes showed only 4% improvement due to setup overhead. Scaled to 100K episodes to demonstrate meaningful 27% speedup, as the benefit compounds with more hash function calls.
+
+### Rust Integration
+**Problem**: PyO3 version incompatibility with Python 3.13  
+**Solution**: PyO3 0.20 only supported Python up to 3.12. Upgraded to PyO3 0.22, which required updating API calls (`&PyDict` → `Bound<'_, PyDict>`, new `get_item()` return types).
+
+**Problem**: u64 integer overflow in Rust  
+**Solution**: State IDs with base-9 encoding of 25 cells exceeded u64 maximum value (18 quintillion). Upgraded all integer types to u128 to handle the full state space.
+
+**Problem**: Rust-Python hash function mismatch  
+**Solution**: Initial implementation produced different hash values than Python. Issue was in tuple key creation - fixed by explicitly constructing Python tuples using `PyTuple::new_bound()` to ensure identical behavior.
+
+
 ## Learning Outcomes
 
 This project demonstrates:
