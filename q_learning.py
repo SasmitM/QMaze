@@ -155,7 +155,7 @@ Configuration: Set training hyperparameters
 '''
 
 # Experiment hyperparameters
-num_episodes = 100000
+num_episodes = 1000000
 decay_rate = 0.99999
 
 '''
